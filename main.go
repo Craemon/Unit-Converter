@@ -1,7 +1,7 @@
 package main
 
 import (
-	"Units/pkg/distance"
+	"Units/pkg/length"
 	"fmt"
 	"os"
 	"strconv"
@@ -29,7 +29,7 @@ func main() {
 	// Determine conversion package based on unit type
 	switch fromUnit {
 	case "mm", "millimeter", "millimeters", "cm", "centimeter", "centimeters", "m", "meter", "meters":
-		result, err := distance.Convert(amount, fromUnit, toUnit)
+		result, err := length.Convert(amount, fromUnit, toUnit)
 		if err != nil {
 			fmt.Println("Error:", err)
 			return
