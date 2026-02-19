@@ -7,8 +7,26 @@ import (
 	"strconv"
 )
 
-// TIP <p>To run your code, right-click the code and select <b>Run</b>.</p> <p>Alternatively, click
-// the <icon src="AllIcons.Actions.Execute"/> icon in the gutter and select the <b>Run</b> menu item from here.</p>
+var unitCategories = map[string][]string{
+	"length": {"mm", "millimeter", "millimeters",
+		"cm", "centimeter", "centimeters",
+		"dm", "decimeter", "decimeters",
+		"m", "meter", "meters",
+		"dam", "dekameter", "dekameters",
+		"hm", "hectometer", "hectometers",
+		"km", "kilometer", "kilometers"},
+}
+
+func getUnitCategory(unit string) string {
+	for category, units := range unitCategories {
+		for _, u := range units {
+			if unit == u {
+				return category
+			}
+		}
+	}
+	return ""
+}
 func main() {
 	if len(os.Args) != 5 {
 		fmt.Println("Usage: units <amount> <unit> to <target_unit>")
@@ -26,9 +44,22 @@ func main() {
 	fromUnit := os.Args[2]
 	toUnit := os.Args[4]
 
+	//get and compare unit categories
+	fromCategory := getUnitCategory(fromUnit)
+	toCategory := getUnitCategory(toUnit)
+
+	if fromCategory == "" || toCategory == "" {
+		fmt.Println("Usage: units <amount> <unit> to <target_unit>")
+		return
+	}
+	if fromCategory != toCategory {
+		fmt.Println("Units must be of the same type.")
+		return
+	}
 	// Determine conversion package based on unit type
-	switch fromUnit {
-	case "mm", "millimeter", "millimeters", "cm", "centimeter", "centimeters", "m", "meter", "meters":
+
+	switch fromCategory {
+	case "length":
 		result, err := length.Convert(amount, fromUnit, toUnit)
 		if err != nil {
 			fmt.Println("Error:", err)
@@ -36,6 +67,6 @@ func main() {
 		}
 		fmt.Printf("%g %s = %g %s\n", amount, fromUnit, result, toUnit)
 	default:
-		fmt.Println("Invalid unit")
+		fmt.Println("This should never happen.")
 	}
 }
