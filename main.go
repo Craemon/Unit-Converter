@@ -2,19 +2,31 @@ package main
 
 import (
 	"Units/pkg/length"
+	"Units/pkg/time"
 	"fmt"
 	"os"
 	"strconv"
 )
 
 var unitCategories = map[string][]string{
-	"length": {"mm", "millimeter", "millimeters",
+	"length": {
+		"mm", "millimeter", "millimeters",
 		"cm", "centimeter", "centimeters",
 		"dm", "decimeter", "decimeters",
 		"m", "meter", "meters",
 		"dam", "dekameter", "dekameters",
 		"hm", "hectometer", "hectometers",
 		"km", "kilometer", "kilometers"},
+	"time": {
+		"ns", "nanosecond", "nanoseconds",
+		"μs", "microsecond", "microseconds",
+		"ms", "millisecond", "milliseconds",
+		"s", "second", "seconds",
+		"min", "minute", "minutes",
+		"h", "hour", "hours",
+		"day", "days",
+		"week", "weeks",
+	},
 }
 
 func getUnitCategory(unit string) string {
@@ -61,6 +73,13 @@ func main() {
 	switch fromCategory {
 	case "length":
 		result, err := length.Convert(amount, fromUnit, toUnit)
+		if err != nil {
+			fmt.Println("Error:", err)
+			return
+		}
+		fmt.Printf("%g %s = %g %s\n", amount, fromUnit, result, toUnit)
+	case "time":
+		result, err := time.Convert(amount, fromUnit, toUnit)
 		if err != nil {
 			fmt.Println("Error:", err)
 			return
