@@ -2,6 +2,7 @@ package main
 
 import (
 	"Units/pkg/length"
+	"Units/pkg/temperature"
 	"Units/pkg/time"
 	"fmt"
 	"os"
@@ -16,7 +17,8 @@ var unitCategories = map[string][]string{
 		"m", "meter", "meters",
 		"dam", "dekameter", "dekameters",
 		"hm", "hectometer", "hectometers",
-		"km", "kilometer", "kilometers"},
+		"km", "kilometer", "kilometers",
+	},
 	"time": {
 		"ns", "nanosecond", "nanoseconds",
 		"μs", "microsecond", "microseconds",
@@ -26,6 +28,11 @@ var unitCategories = map[string][]string{
 		"h", "hour", "hours",
 		"day", "days",
 		"week", "weeks",
+	},
+	"temperature": {
+		"K", "kelvin",
+		"°C", "celsius",
+		"°F", "fahrenheit",
 	},
 }
 
@@ -80,6 +87,13 @@ func main() {
 		fmt.Printf("%g %s = %g %s\n", amount, fromUnit, result, toUnit)
 	case "time":
 		result, err := time.Convert(amount, fromUnit, toUnit)
+		if err != nil {
+			fmt.Println("Error:", err)
+			return
+		}
+		fmt.Printf("%g %s = %g %s\n", amount, fromUnit, result, toUnit)
+	case "temperature":
+		result, err := temperature.Convert(amount, fromUnit, toUnit)
 		if err != nil {
 			fmt.Println("Error:", err)
 			return
