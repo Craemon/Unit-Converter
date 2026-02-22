@@ -2,6 +2,7 @@ package main
 
 import (
 	"Units/pkg/length"
+	"Units/pkg/mass"
 	"Units/pkg/temperature"
 	"Units/pkg/time"
 	"fmt"
@@ -33,6 +34,15 @@ var unitCategories = map[string][]string{
 		"K", "kelvin",
 		"°C", "celsius",
 		"°F", "fahrenheit",
+	},
+	"mass": {
+		"µg", "microgram", "micrograms",
+		"mg", "milligram", "milligrams",
+		"g", "gram", "grams",
+		"kg", "kilogram", "kilograms",
+		"t", "tonne", "tonnes",
+		"lb", "lbs", "pound", "pounds",
+		"oz", "ounce", "ounces",
 	},
 }
 
@@ -94,6 +104,13 @@ func main() {
 		fmt.Printf("%g %s = %g %s\n", amount, fromUnit, result, toUnit)
 	case "temperature":
 		result, err := temperature.Convert(amount, fromUnit, toUnit)
+		if err != nil {
+			fmt.Println("Error:", err)
+			return
+		}
+		fmt.Printf("%g %s = %g %s\n", amount, fromUnit, result, toUnit)
+	case "mass":
+		result, err := mass.Convert(amount, fromUnit, toUnit)
 		if err != nil {
 			fmt.Println("Error:", err)
 			return
