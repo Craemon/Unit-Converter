@@ -45,6 +45,12 @@ var unitCategories = map[string][]string{
 		"oz", "ounce", "ounces",
 	},
 }
+var conversionFunctions = map[string]func(float64, string, string) (float64, error){
+	"length":      length.Convert,
+	"time":        time.Convert,
+	"temperature": temperature.Convert,
+	"mass":        mass.Convert,
+}
 
 func getUnitCategory(unit string) string {
 	for category, units := range unitCategories {
@@ -85,38 +91,18 @@ func main() {
 		fmt.Println("Units must be of the same type.")
 		return
 	}
-	// Determine conversion package based on unit type
+	// Convert and output
 
-	switch fromCategory {
-	case "length":
-		result, err := length.Convert(amount, fromUnit, toUnit)
-		if err != nil {
-			fmt.Println("Error:", err)
-			return
-		}
-		fmt.Printf("%g %s = %g %s\n", amount, fromUnit, result, toUnit)
-	case "time":
-		result, err := time.Convert(amount, fromUnit, toUnit)
-		if err != nil {
-			fmt.Println("Error:", err)
-			return
-		}
-		fmt.Printf("%g %s = %g %s\n", amount, fromUnit, result, toUnit)
-	case "temperature":
-		result, err := temperature.Convert(amount, fromUnit, toUnit)
-		if err != nil {
-			fmt.Println("Error:", err)
-			return
-		}
-		fmt.Printf("%g %s = %g %s\n", amount, fromUnit, result, toUnit)
-	case "mass":
-		result, err := mass.Convert(amount, fromUnit, toUnit)
-		if err != nil {
-			fmt.Println("Error:", err)
-			return
-		}
-		fmt.Printf("%g %s = %g %s\n", amount, fromUnit, result, toUnit)
-	default:
-		fmt.Println("This should never happen.")
+	converter, exists := conversionFunctions[fromCategory]
+	if !exists {
+		fmt.Println("Conversion function not found.")
+		return
 	}
+	result, err := converter(amount, fromUnit, toUnit)
+	if err != nil {
+		fmt.Println("Error:", err)
+		return
+	}
+
+	fmt.Printf("%g %s = %g %s\n", amount, fromUnit, result, toUnit)
 }
