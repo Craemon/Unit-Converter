@@ -50,3 +50,15 @@ func Convert(inputAmount float64, from string, to string) (float64, error) {
 		return 0, fmt.Errorf("unsupported target unit: %s", to)
 	}
 }
+
+func GetUnits() []string {
+	return []string{
+		"mm", "millimeter", "millimeters",
+		"cm", "centimeter", "centimeters",
+		"dm", "decimeter", "decimeters",
+		"m", "meter", "meters",
+		"dam", "dekameter", "dekameters",
+		"hm", "hectometer", "hectometers",
+		"km", "kilometer", "kilometers",
+	}
+}

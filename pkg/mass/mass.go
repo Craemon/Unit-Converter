@@ -53,3 +53,15 @@ func Convert(inputAmount float64, from string, to string) (float64, error) {
 		return 0, fmt.Errorf("unsupported target unit: %s", to)
 	}
 }
+
+func GetUnits() []string {
+	return []string{
+		"µg", "ug", "microgram", "micrograms",
+		"mg", "milligram", "milligrams",
+		"g", "gram", "grams",
+		"kg", "kilogram", "kilograms",
+		"t", "tonne", "tonnes",
+		"lb", "lbs", "pound", "pounds",
+		"oz", "ounce", "ounces",
+	}
+}

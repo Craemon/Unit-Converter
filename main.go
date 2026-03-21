@@ -10,41 +10,6 @@ import (
 	"strconv"
 )
 
-var unitCategories = map[string][]string{
-	"length": {
-		"mm", "millimeter", "millimeters",
-		"cm", "centimeter", "centimeters",
-		"dm", "decimeter", "decimeters",
-		"m", "meter", "meters",
-		"dam", "dekameter", "dekameters",
-		"hm", "hectometer", "hectometers",
-		"km", "kilometer", "kilometers",
-	},
-	"time": {
-		"ns", "nanosecond", "nanoseconds",
-		"μs", "microsecond", "microseconds",
-		"ms", "millisecond", "milliseconds",
-		"s", "second", "seconds",
-		"min", "minute", "minutes",
-		"h", "hour", "hours",
-		"day", "days",
-		"week", "weeks",
-	},
-	"temperature": {
-		"K", "kelvin",
-		"°C", "celsius",
-		"°F", "fahrenheit",
-	},
-	"mass": {
-		"µg", "microgram", "micrograms",
-		"mg", "milligram", "milligrams",
-		"g", "gram", "grams",
-		"kg", "kilogram", "kilograms",
-		"t", "tonne", "tonnes",
-		"lb", "lbs", "pound", "pounds",
-		"oz", "ounce", "ounces",
-	},
-}
 var conversionFunctions = map[string]func(float64, string, string) (float64, error){
 	"length":      length.Convert,
 	"time":        time.Convert,
@@ -52,7 +17,17 @@ var conversionFunctions = map[string]func(float64, string, string) (float64, err
 	"mass":        mass.Convert,
 }
 
+func getUnitCategories() map[string][]string {
+	return map[string][]string{
+		"length":      length.GetUnits(),
+		"time":        time.GetUnits(),
+		"temperature": temperature.GetUnits(),
+		"mass":        mass.GetUnits(),
+	}
+}
+
 func getUnitCategory(unit string) string {
+	unitCategories := getUnitCategories()
 	for category, units := range unitCategories {
 		for _, u := range units {
 			if unit == u {

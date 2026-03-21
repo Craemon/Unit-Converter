@@ -55,3 +55,16 @@ func Convert(inputAmount float64, from string, to string) (float64, error) {
 		return 0, fmt.Errorf("unsupported target unit: %s", to)
 	}
 }
+
+func GetUnits() []string {
+	return []string{
+		"ns", "nanosecond", "nanoseconds",
+		"μs", "us", "microsecond", "microseconds",
+		"ms", "millisecond", "milliseconds",
+		"s", "second", "seconds",
+		"min", "minute", "minutes",
+		"h", "hour", "hours",
+		"day", "days",
+		"week", "weeks",
+	}
+}
